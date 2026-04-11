@@ -2,139 +2,52 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>bizy.cn | 个人空间</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>bizyMusic</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- 引入图标库 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- 动态背景 -->
+
   <canvas id="bg"></canvas>
-  
-  <!-- 导航栏 -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <div class="logo">bizy.cn</div>
-      <ul class="nav-links">
-        <li><a href="#home">首页</a></li>
-		<li><a href="#music">BizyMusic</a></li>
-        <li><a href="#midi">MIDI可视化</a></li>
-        <li><a href="#ai">AI创作</a></li>
-		<li><a href="#lab">实验室</a></li>
-        <li><a href="#tools">常用工具</a></li>
-        <li><a href="#contact">联系我</a></li>
-      </ul>
-      <div class="burger">
-        <div class="line1"></div>
-        <div class="line2"></div>
-        <div class="line3"></div>
-      </div>
-    </div>
-  </nav>
 
-  <!-- 主要内容区 -->
-  <main>
-    <!-- 首页 Hero -->
-    <section id="home" class="hero">
-      <div class="glass-card">
-        <h1 class="hero-title">欢迎来到我的空间</h1>
-        <p class="hero-subtitle">创意 · 技术 · 音乐 · AI</p>
-        <div class="hero-buttons">
-          <a href="#midi" class="btn-primary">🎵 开始探索</a>
-          <a href="#contact" class="btn-secondary">📮 联系我</a>
-        </div>
-      </div>
-    </section>
+  <main class="main-container">
+    
+    <h1 class="site-title">bizy</h1>
 
-    <!-- MIDI可视化（占位） -->
-    <section id="midi" class="section">
-      <div class="glass-card">
-        <h2><i class="fas fa-music"></i> MIDI可视化</h2>
-        <p>音频可视化实验项目</p>
-        <div class="coming-soon">🚧 开发中，敬请期待...</div>
-      </div>
-    </section>
+    <nav class="glass-nav">
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-home"></i></span>
+        <span class="text">首页</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-music"></i></span>
+        <span class="text">BizyMusic</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-wave-square"></i></span>
+        <span class="text">MIDI 可视化</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-robot"></i></span>
+        <span class="text">AI 创作</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-flask"></i></span>
+        <span class="text">实验室</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-tools"></i></span>
+        <span class="text">常用工具</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="icon"><i class="fas fa-paper-plane"></i></span>
+        <span class="text">联系我</span>
+      </a>
+    </nav>
 
-    <!-- 实验室（占位） -->
-    <section id="lab" class="section">
-      <div class="glass-card">
-        <h2><i class="fas fa-flask"></i> 实验室</h2>
-        <p>各种创意实验和技术探索</p>
-        <div class="coming-soon">🔬 实验中...</div>
-      </div>
-    </section>
-
-    <!-- 在线音乐（占位） -->
-    <section id="music" class="section">
-      <div class="glass-card">
-        <h2><i class="fas fa-headphones-alt"></i> 在线音乐</h2>
-        <p>我的音乐收藏和歌单</p>
-        <a href="https://music.163.com" target="_blank" class="btn-external">
-          <i class="fas fa-external-link-alt"></i> 前往网易云音乐
-        </a>
-      </div>
-    </section>
-
-    <!-- AI创作（占位） -->
-    <section id="ai" class="section">
-      <div class="glass-card">
-        <h2><i class="fas fa-robot"></i> AI创作</h2>
-        <p>AI辅助的创意作品展示</p>
-        <div class="coming-soon">🤖 训练中...</div>
-      </div>
-    </section>
-
-    <!-- 常用工具（占位） -->
-    <section id="tools" class="section">
-      <div class="glass-card">
-        <h2><i class="fas fa-toolbox"></i> 常用工具</h2>
-        <p>我日常使用的效率工具推荐</p>
-        <div class="coming-soon">🛠️ 整理中...</div>
-      </div>
-    </section>
-
-    <!-- 联系我 -->
-    <section id="contact" class="section contact-section">
-      <div class="glass-card">
-        <h2><i class="fas fa-envelope"></i> 联系我</h2>
-        <p>有任何想法或合作，欢迎联系！</p>
-        
-        <div class="contact-links">
-          <a href="mailto:your-email@example.com" class="contact-item">
-            <i class="fas fa-envelope"></i>
-            <span>bizymusic@qq.com</span>
-          </a>
-          
-          <div class="contact-item wechat">
-            <i class="fab fa-weixin"></i>
-            <span>微信：bizymusic</span>
-            <span class="wechat-tip">（扫码添加）</span>
-          </div>
-          
-          <a href="https://github.com/your-username" target="_blank" class="contact-item">
-            <i class="fab fa-github"></i>
-            <span>@bizymusice</span>
-          </a>
-          
-          <!-- 可以添加更多：Twitter、微博等 -->
-        </div>
-        
-        <!-- 微信二维码占位（后续可添加） -->
-        <div class="wechat-qr">
-          <div class="qr-placeholder">
-            <i class="fab fa-weixin"></i>
-            <p>微信二维码</p>
-            <small>将二维码图片放在 /assets/wechat-qr.png</small>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
-
-  <!-- 页脚 -->
-  <footer>
-    <p>&copy; 2026 bizy.cn | Made with <i class="fas fa-heart"></i> by You</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>
