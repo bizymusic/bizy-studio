@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>bizy</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .logo {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      text-align: center;
+      font-size: 48px;
+      letter-spacing: 8px;
+    }
+
+    .enter {
+      position: absolute;
+      top: 55%;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      opacity: 0.6;
+      cursor: pointer;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="logo">BIZY</div>
+<div class="enter" onclick="enter()">ENTER</div>
+
+<script>
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let t = 0;
+
+function draw() {
+  t += 0.01;
+  ctx.fillStyle = "rgba(0,0,0,0.1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = 0; i < 100; i++) {
+    let x = canvas.width / 2 + Math.sin(i + t) * 300;
+    let y = canvas.height / 2 + Math.cos(i + t) * 300;
+
+    ctx.fillStyle = "white";
+    ctx.fillRect(x, y, 2, 2);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+draw();
+
+function enter() {
+  alert("这里以后进入你的音频可视化页面");
+}
+</script>
+
+</body>
+</html>
