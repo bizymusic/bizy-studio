@@ -1,9 +1,11 @@
-// ===== 粒子动态背景（保留原有功能）=====
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 
 let width, height;
-let particles = [];
+let notes = [];
+
+// 定义音符符号库
+const symbols = ['♪', '♫', '♩', '♬', '♯', '♭', '𝄞'];
 
 function resize() {
   width = canvas.width = window.innerWidth;
@@ -12,144 +14,84 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-class Particle {
+// 音符类
+class FloatingNote {
   constructor() {
+    this.reset();
+    this.y = Math.random() * height; // 初始随机分布
+  }
+
+  reset() {
     this.x = Math.random() * width;
-    this.y = Math.random() * height;
-    this.vx = (Math.random() - 0.5) * 0.5;
-    this.vy = (Math.random() - 0.5) * 0.5;
-    this.radius = Math.random() * 1.5 + 0.5;
-    this.color = `hsla(${Math.random() * 60 + 180}, 100%, 70%, 0.6)`;
-  }
-  
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
+    this.y = height + Math.random() * 50; // 从屏幕底部生成
+    this.speed = Math.random() * 0.4 + 0.1; // 飘动速度较慢，营造梦幻感
+    this.size = Math.random() * 24 + 12; // 字体大小 12px - 36px
+    this.opacity = Math.random() * 0.3 + 0.2; ; // 极低透明度，若隐若现
     
-    if (this.x < 0 || this.x > width) this.vx *= -1;
-    if (this.y < 0 || this.y > height) this.vy *= -1;
+    // 颜色：随机淡雅色
+    const colors = [
+      'rgba(102, 126, 234, COLOR)', // 淡蓝
+      'rgba(118, 75, 162, COLOR)',  // 淡紫
+      'rgba(72, 187, 120, COLOR)',  // 淡绿
+      'rgba(237, 100, 166, COLOR)'  // 淡粉
+    ];
+    let colorTemplate = colors[Math.floor(Math.random() * colors.length)];
+    this.color = colorTemplate.replace('COLOR', this.opacity);
+    
+    this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
+    this.wobble = Math.random() * Math.PI * 2; // 左右摇摆的起始相位
+    this.wobbleSpeed = Math.random() * 0.02 + 0.01;
   }
-  
+
+  update() {
+    this.y -= this.speed; // 向上飘
+    this.wobble += this.wobbleSpeed;
+    
+    // 左右轻微摇摆 (正弦波)
+    this.x += Math.sin(this.wobble) * 0.5;
+
+    // 如果飘出顶部，重置到底部
+    if (this.y < -50) {
+      this.reset();
+    }
+  }
+
   draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    ctx.font = `${this.size}px serif`; // 使用衬线体让音符更好看
     ctx.fillStyle = this.color;
-    ctx.fill();
+    ctx.fillText(this.symbol, this.x, this.y);
   }
 }
 
 function init() {
-  particles = [];
-  const count = Math.min(100, Math.floor(width * height / 10000));
+  notes = [];
+  // 根据屏幕宽度决定音符数量，避免太拥挤
+  const count = Math.floor(window.innerWidth / 30); 
   for (let i = 0; i < count; i++) {
-    particles.push(new Particle());
-  }
-}
-
-function connect() {
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      
-      if (dist < 120) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(100, 200, 255, ${0.2 - dist/600})`;
-        ctx.lineWidth = 0.5;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
+    notes.push(new FloatingNote());
   }
 }
 
 function animate() {
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  ctx.fillRect(0, 0, width, height);
-  
-  particles.forEach(p => {
-    p.update();
-    p.draw();
+
+  notes.forEach(note => {
+    note.update();
+    note.draw();
   });
-  connect();
-  
+
   requestAnimationFrame(animate);
 }
 
 init();
 animate();
 
-// ===== 移动端导航菜单 =====
-const burger = document.querySelector('.burger');
-const nav = document.querySelector('.nav-links');
-const navLinks = document.querySelectorAll('.nav-links li');
 
-burger.addEventListener('click', () => {
-  nav.classList.toggle('active');
-  burger.classList.toggle('active');
+// 添加鼠标移动视差效果
+document.addEventListener('mousemove', (e) => {
+  const x = (e.clientX / width - 0.5) * 20;  // 调整 20 可以改变移动幅度
+  const y = (e.clientY / height - 0.5) * 20;
   
-  navLinks.forEach((link, index) => {
-    if (link.style.animation) {
-      link.style.animation = '';
-    } else {
-      link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
-    }
-  });
+  const nav = document.querySelector('.glass-nav');
+  nav.style.transform = `translate(${x}px, ${y}px)`;
 });
-
-// 点击导航链接后关闭菜单
-navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('active');
-    burger.classList.remove('active');
-  });
-});
-
-// ===== 滚动时导航栏效果 =====
-let lastScroll = 0;
-const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll', () => {
-  const currentScroll = window.pageYOffset;
-  
-  if (currentScroll > 100) {
-    navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-  } else {
-    navbar.style.background = 'var(--glass-bg)';
-  }
-  
-  lastScroll = currentScroll;
-});
-
-// ===== 平滑滚动（兼容旧浏览器）=====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
-  });
-});
-
-// ===== 添加 CSS 动画关键帧 =====
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes navLinkFade {
-    from {
-      opacity: 0;
-      transform: translateX(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-`;
-document.head.appendChild(style);
