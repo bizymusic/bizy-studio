@@ -1,0 +1,30 @@
+<input type="file" id="fileInput" accept=".mid,.midi" />
+<br />
+<label>BPM（可选）:</label>
+<input type="number" id="bpmInput" placeholder="默认读取文件BPM" />
+<button id="applyBpmBtn">应用BPM</button>
+<br /><br />
+<label>横向缩放（px/s）：</label>
+<input type="range" id="scaleSlider" min="20" max="300" value="60" />
+<span id="scaleValue">60</span>
+<br />
+<label>纵向缩放（间距 px）：</label>
+<input type="range" id="verticalSlider" min="2" max="20" value="8" />
+<span id="verticalValue">8</span>
+<br />
+<label>最短高亮时间：</label>
+<input type="number" id="highlightInput" step="0.01" min="0.01" value="0.20" />
+<br /><br />
+<button id="startBtn">开始</button>
+<button id="pauseBtn">暂停</button>
+<button id="resetBtn">重置</button>
+<button id="replayBtn">重新播放</button>
+<label style="margin-left:10px;">
+  <input type="checkbox" id="particleToggle">
+  发光粒子
+</label>
+<div id="noteContainerWrapper">
+  <div id="noteContainer">
+    <div id="playhead"></div>
+  </div>
+</div>
