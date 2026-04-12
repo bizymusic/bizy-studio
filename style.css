@@ -1,151 +1,126 @@
-/* ===== 全局设置 ===== */
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.25);
-  --glass-border: rgba(255, 255, 255, 0.6);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-  --text-main: #4a5568;
-  --text-hover: #2d3748;
-  --accent-color: #667eea;
+    --bg: #f5f5f5; /* 模仿你图中那种高级的米白/灰白 */
+    --dark: #0a0a0a;
+    --accent: #ff4d00; /* 给一点点醒目的亮色，也可以改成酸性绿 */
+    --border: rgba(0,0,0,0.1);
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent; /* 去除手机点击高亮 */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: crosshair; /* 更有极客感 */
 }
 
 body {
-  /* 背景加一点微弱的渐变，让磨砂玻璃效果显现出来 */
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  overflow: hidden; /* 禁止页面滚动，只让内容居中 */
-  color: var(--text-main);
+    background-color: var(--bg);
+    color: var(--dark);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.2;
 }
 
-/* 背景 Canvas (最底层) */
-#bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+#canvas-container {
+    position: fixed;
+    top: 0; left: 0;
+    z-index: -1;
+    opacity: 0.4;
 }
 
-/* ===== 主容器 (居中) ===== */
-.main-container {
-  text-align: center;
-  position: relative;
-  z-index: 10;
-  width: 90%;
-  max-width: 1000px;
-}
-
-/* 顶部大标题 */
-.site-title {
-  font-size: 4rem;
-  font-weight: 200;
-  letter-spacing: 6px;
-  margin-bottom: 3rem;
-  color: #2d3748;
-  opacity: 0.9;
-  /* 防止标题在手机上太大换行 */
-  white-space: nowrap; 
-}
-
-/* ===== 磨砂玻璃导航栏 (核心) ===== */
-.glass-nav {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  
-  border-radius: 50px; /* 胶囊形状 */
-  padding: 1rem 2rem;
-  display: inline-flex;
-  flex-wrap: wrap; /* 允许换行 */
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  
-  animation: floatUp 1s ease-out;
-}
-
-@keyframes floatUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 导航项样式 */
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: var(--text-main);
-  font-size: 0.95rem;
-  font-weight: 500;
-  padding: 10px 20px;
-  border-radius: 30px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  position: relative;
-}
-
-.nav-item .icon {
-  font-size: 1.2rem;
-  transition: transform 0.3s ease;
-}
-
-/* ===== 鼠标/手指触摸特效 ===== */
-.nav-item:hover, .nav-item:active {
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--accent-color);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.nav-item:hover .icon {
-  transform: scale(1.2);
-}
-
-/* ===== 手机端适配 (关键修改) ===== */
-@media screen and (max-width: 768px) {
-  .main-container {
-    width: 100%;
-    padding: 0 10px;
-  }
-
-  .site-title {
-    font-size: 2.5rem; /* 手机上标题缩小 */
-    margin-bottom: 2rem;
-  }
-
-  .glass-nav {
+/* 导航栏：克制而精致 */
+nav {
+    position: fixed;
+    top: 0; width: 100%;
     display: flex;
-    flex-direction: column; /* 手机上变为竖向列表 */
-    width: 100%; /* 宽度撑满 */
-    border-radius: 20px; /* 圆角变小一点 */
-    padding: 1rem;
-    gap: 0.5rem;
-    max-height: 80vh; /* 限制高度，内容多时可滚动 */
-    overflow-y: auto; /* 允许竖向滚动 */
-  }
-  
-  .nav-item {
-    width: 100%; /* 每个按钮占满一行 */
-    justify-content: flex-start; /* 图标在左，文字在右 */
-    padding: 15px 20px; /* 增加触摸区域 */
-    background: rgba(255, 255, 255, 0.3); /* 每个按钮带一点底色区分 */
-  }
+    justify-content: space-between;
+    padding: 30px 5%;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(5px);
+}
 
-  /* 偶数项稍微错位一点，增加灵动性 (可选) */
-  .nav-item:nth-child(even) {
-    background: rgba(255, 255, 255, 0.1); 
-  }
+nav a {
+    text-decoration: none;
+    color: var(--dark);
+    margin-left: 30px;
+}
+
+.btn-submit {
+    background: #d1d1cc;
+    border: none;
+    padding: 5px 15px;
+    margin-left: 30px;
+    font-weight: 700;
+}
+
+/* Hero Section */
+.hero {
+    height: 90vh;
+    padding: 15vh 5% 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-title h1 {
+    font-size: 12vw;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+}
+
+.hero-title h1.accent {
+    padding-left: 10vw;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--dark);
+}
+
+.hero-sub {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #666;
+}
+
+/* 作品网格：参考你的截图 */
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 5% 5%;
+}
+
+.card {
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-img {
+    aspect-ratio: 16 / 9;
+    background: #ddd;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.img-inner {
+    width: 100%; height: 100%;
+    transition: transform 1.2s ease;
+}
+
+.card:hover .img-inner {
+    transform: scale(1.1);
+}
+
+.card-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.card-info p {
+    font-size: 12px;
+    color: #888;
+}
+
+@media (max-width: 768px) {
+    .work-grid { grid-template-columns: 1fr; }
 }

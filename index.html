@@ -1,54 +1,66 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>bizyMusic</title>
-  <link rel="stylesheet" href="style.css" />
-  <!-- 引入图标库 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizy Lab // 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
+    <div id="canvas-container"></div>
 
-  <canvas id="bg"></canvas>
-
-  <main class="main-container">
-    
-    <h1 class="site-title">bizy</h1>
-
-    <nav class="glass-nav">
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-home"></i></span>
-        <span class="text">首页</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-music"></i></span>
-        <span class="text">BizyMusic</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-wave-square"></i></span>
-        <span class="text">MIDI 可视化</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-robot"></i></span>
-        <span class="text">AI 创作</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-flask"></i></span>
-        <span class="text">实验室</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-tools"></i></span>
-        <span class="text">常用工具</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="icon"><i class="fas fa-paper-plane"></i></span>
-        <span class="text">联系我</span>
-      </a>
+    <nav>
+        <div class="nav-left">LAB_01</div>
+        <div class="nav-right">
+            <a href="https://music.163.com/#/artist?id=13681128">Bizy MUSIC</a>
+            <a href="midi-lab/index.html">MIDI LAB</a>
+            <a href="#">AI GEN</a>
+            <button class="btn-submit">CONTACT</button>
+        </div>
     </nav>
 
-  </main>
+    <main>
+        <section class="hero">
+            <div class="hero-title">
+                <h1 class="reveal-text">Bizy Lab</h1>
+                <h1 class="reveal-text accent">ENGINEERING</h1>
+            </div>
+            <p class="hero-sub">Music PRODUCER & WEB DEVELOPER / BASED IN CODE</p>
+        </section>
 
-  <script src="script.js"></script>
+        <section class="work-grid">
+            <div class="card">
+                <div class="card-img"><div class="img-inner" style="background: #1a1a1a;"></div></div>
+                <div class="card-info">
+                    <h3>TRAP_STATION</h3>
+                    <p>UI | UX | AUDIO</p>
+                </div>
+            </div>
+
+            <a href="midi-lab/index.html" style="text-decoration: none; color: inherit;">
+                <div class="card">
+                    <div class="card-img"><div class="img-inner" style="background: #222;"></div></div>
+                    <div class="card-info">
+                        <h3>MIDI_VISUALIZER</h3>
+                        <p>WEBGL | MIDI</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="card">
+                <div class="card-img"><div class="img-inner" style="background: #111;"></div></div>
+                <div class="card-info">
+                    <h3>GEN_AI_BEATS</h3>
+                    <p>AI | PYTHON</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="bg3d.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
