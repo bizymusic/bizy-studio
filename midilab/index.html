@@ -13,10 +13,13 @@
 
 <!-- 🎛️ 悬浮控制面板 -->
 <div class="panel" id="controlPanel">
-  <div class="row">
-    <input type="file" id="fileInput" accept=".mid,.midi" />
+  
+  <div id="uploadLine" class="upload-line">
+    <span id="uploadText">拖拽 MIDI 或点击选择</span>
+    <span id="fileName">未选择</span>
+    <input type="file" id="fileInput" accept=".mid,.midi" hidden />
   </div>
-
+  
   <div class="row">
     <label>BPM</label>
     <input type="number" id="bpmInput" placeholder="自动读取" />

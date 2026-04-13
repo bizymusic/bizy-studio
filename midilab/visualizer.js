@@ -85,11 +85,45 @@ verticalSlider.addEventListener("input", () => {
 });
 
 // ===== 文件加载 =====
-fileInput.addEventListener("change", async (e) => {
-  try {
-    const file = e.target.files[0];
-    if (!file) return;
+const uploadLine = document.getElementById("uploadLine");
+const fileName = document.getElementById("fileName");
 
+// 点击选择
+uploadLine.addEventListener("click", () => {
+  fileInput.click();
+});
+
+// 拖拽
+uploadLine.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  uploadLine.classList.add("dragover");
+});
+
+uploadLine.addEventListener("dragleave", () => {
+  uploadLine.classList.remove("dragover");
+});
+
+uploadLine.addEventListener("drop", (e) => {
+  e.preventDefault();
+  uploadLine.classList.remove("dragover");
+
+  const file = e.dataTransfer.files[0];
+  handleFile(file);
+});
+
+// 选择文件
+fileInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  handleFile(file);
+});
+
+// 统一处理
+async function handleFile(file) {
+  if (!file) return;
+
+  fileName.textContent = file.name;
+
+  try {
     const arrayBuffer = await file.arrayBuffer();
     midiData = new Midi(arrayBuffer);
 
@@ -101,7 +135,7 @@ fileInput.addEventListener("change", async (e) => {
     console.error(err);
     alert("❌ MIDI 解析失败");
   }
-});
+}
 
 applyBpmBtn.addEventListener("click", () => {
   const bpmVal = parseFloat(bpmInput.value);

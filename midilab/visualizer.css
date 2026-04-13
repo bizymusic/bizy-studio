@@ -1,7 +1,7 @@
 /* ===== 全局 ===== */
 body {
   margin: 0;
-  background: #ffffff;
+  background: #ebe8e8;
   color: #000000;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   overflow: hidden;
@@ -31,7 +31,7 @@ body {
   height: 100%;
 }
 
-/* ===== 播放线 ===== */
+/* ===== 播放线   没用到！ ===== */
 #playhead {
   position: absolute;
   width: 2px;
@@ -84,16 +84,27 @@ body {
 /* ===== 悬浮面板 ===== */
 .panel {
   position: fixed;
-  top: 20px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  
+
+  transform: translate(-50%, -50%) scale(1);
+
   background: rgba(20,20,20,0.5);
   backdrop-filter: blur(20px);
-  
+
   border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+
+  padding: 20px;
+
+  z-index: 100;
+
+  transition: all 0.35s ease;
+
+  background: rgba(100, 100, 100, 0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  
   padding: 16px;
   z-index: 100;
   transition: 0.4s;
@@ -128,7 +139,7 @@ input {
   left: 50%;
   transform: translateX(-50%);
   
-  background: rgba(10,10,10,0.6);
+  background: rgba(100, 100, 100, 0.5);
   backdrop-filter: blur(20px);
   
   border: 1px solid rgba(255,255,255,0.08);
@@ -174,4 +185,42 @@ button:hover {
 .toggle {
   font-size: 12px;
   opacity: 0.8;
+}
+
+
+/* ===== 上传midicss ===== */
+.upload-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 90px;
+
+  padding: 6px 10px;
+  border-radius: 8px;
+
+  background: rgba(41, 41, 41, 0.434);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 16px; /* 👈 关键 */
+  transition: 0.2s;
+}
+
+.upload-line:hover {
+  border-color: #000000;
+  background: rgba(0,224,255,0.06);
+}
+
+.upload-line.dragover {
+  border-color: #ff0000;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+
+#uploadText {
+  opacity: 0.7;
+}
+
+#fileName {
+  color: #ffffff;
+  font-weight: 500;
 }
