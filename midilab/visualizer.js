@@ -19,12 +19,20 @@ const scaleValue = document.getElementById("scaleValue");
 const verticalSlider = document.getElementById("verticalSlider");
 const verticalValue = document.getElementById("verticalValue");
 const highlightInput = document.getElementById("highlightInput");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
 const replayBtn = document.getElementById("replayBtn");
+const playBtn = document.getElementById("playBtn");
+const panel = document.getElementById("controlPanel");
+const openPanelBtn = document.getElementById("openPanelBtn");
 const containerWrapper = document.getElementById("noteContainerWrapper");
 const container = document.getElementById("noteContainer");
+
+// ===== 面板切换 =====
+if (openPanelBtn) {
+  openPanelBtn.addEventListener("click", () => {
+    panel.classList.toggle("hidden");
+  });
+}
 
 // ===== 状态 =====
 let midiData = null;
@@ -44,7 +52,6 @@ let animationFrame = null;
 let paused = false;
 let playbackEnded = false;
 let hasStarted = false;
-
 let lastFrameTime = 0;
 
 // ===== 高亮时间 =====
@@ -62,15 +69,18 @@ highlightInput.addEventListener("input", () => {
 scaleSlider.addEventListener("input", () => {
   pixelsPerSecond = parseInt(scaleSlider.value);
   scaleValue.textContent = pixelsPerSecond;
+
   if (hasStarted && !paused) {
     animationStartTime = performance.now() - playbackTime / tempoFactor * 1000;
   }
+
   if (noteElements.length > 0) rescaleNotes();
 });
 
 verticalSlider.addEventListener("input", () => {
   noteSpacing = parseInt(verticalSlider.value);
   verticalValue.textContent = noteSpacing;
+
   if (noteElements.length > 0) rescaleNotes();
 });
 
@@ -101,14 +111,10 @@ applyBpmBtn.addEventListener("click", () => {
   }
 });
 
-// ===== 控制 =====
-const playBtn = document.getElementById("playBtn");
-const panel = document.getElementById("controlPanel");
-
+// ===== 播放控制（合并版）=====
 playBtn.addEventListener("click", () => {
   if (!midiData) return;
 
-  // 👉 第一次播放
   if (!hasStarted) {
     hasStarted = true;
     paused = false;
@@ -117,26 +123,27 @@ playBtn.addEventListener("click", () => {
     requestAnimationFrame(animate);
 
     playBtn.textContent = "⏸";
-    panel.classList.add("hidden"); // ✅ 这里才会隐藏
+    panel.classList.add("hidden");
     return;
   }
 
-  // 👉 切换暂停
   paused = !paused;
 
   if (!paused) {
     animationStartTime = performance.now() - playbackTime / tempoFactor * 1000;
     requestAnimationFrame(animate);
     playBtn.textContent = "⏸";
-    panel.classList.add("hidden"); // 播放时隐藏
+    panel.classList.add("hidden");
   } else {
     playBtn.textContent = "▶";
-    panel.classList.remove("hidden"); // 暂停时显示
+    panel.classList.remove("hidden");
   }
 });
 
+// ===== 重置 =====
 resetBtn.addEventListener("click", () => {
   cancelAnimationFrame(animationFrame);
+
   midiData = null;
   allNotes = [];
   noteElements = [];
@@ -149,24 +156,35 @@ resetBtn.addEventListener("click", () => {
   bpmInput.value = "";
 
   containerWrapper.scrollLeft = 0;
-  container.innerHTML = `<div id="playhead"></div>`;
+  container.innerHTML = "";
+
+  playBtn.textContent = "▶";
+  panel.classList.remove("hidden");
 });
 
+// ===== 重播 =====
 replayBtn.addEventListener("click", () => {
   if (!midiData) return;
+
   cancelAnimationFrame(animationFrame);
+
   paused = false;
   playbackTime = 0;
   hasStarted = true;
   animationStartTime = performance.now();
   playbackEnded = false;
+
+  playBtn.textContent = "⏸";
+  panel.classList.add("hidden");
+
   requestAnimationFrame(animate);
 });
 
 // ===== 构建 =====
 function buildVisualizer() {
   cancelAnimationFrame(animationFrame);
-  container.innerHTML = `<div id="playhead"></div>`;
+
+  container.innerHTML = "";
   allNotes = [];
   noteElements = [];
   hasStarted = false;
@@ -190,8 +208,7 @@ function buildVisualizer() {
 
   totalDuration = Math.max(...allNotes.map(n => n.time + n.duration));
 
-  const totalWidth = totalDuration * pixelsPerSecond + 100;
-  container.style.width = `${totalWidth}px`;
+  container.style.width = `${totalDuration * pixelsPerSecond + 100}px`;
 
   allNotes.forEach(note => {
     const div = document.createElement("div");
@@ -213,7 +230,7 @@ function rescaleNotes() {
   });
 }
 
-// ===== 粒子系统（优化版） =====
+// ===== 粒子系统 =====
 const MAX_PARTICLES = 200;
 const particles = [];
 
@@ -255,6 +272,7 @@ function updateParticles(delta) {
     if (!p.active) return;
 
     p.life -= delta;
+
     if (p.life <= 0) {
       p.active = false;
       p.el.style.display = "none";
@@ -281,13 +299,8 @@ function animate(timestamp) {
   playbackTime = (timestamp - animationStartTime) / 1000 * tempoFactor;
   const position = playbackTime * pixelsPerSecond;
 
-  const playhead = document.getElementById("playhead");
-  playhead.style.left = `${position}px`;
-
-  containerWrapper.scrollLeft = Math.max(
-    0,
-    position - containerWrapper.clientWidth / 2
-  );
+  containerWrapper.scrollLeft =
+    position - containerWrapper.clientWidth / 2;
 
   noteElements.forEach(({ div, note }) => {
     const start = note.time;
@@ -309,7 +322,6 @@ function animate(timestamp) {
           spawnParticles(x, y);
           div._lastParticle = timestamp;
         }
-
       } else {
         div.classList.remove("glow");
       }
@@ -328,17 +340,11 @@ function animate(timestamp) {
     animationFrame = requestAnimationFrame(animate);
   } else if (!playbackEnded) {
     playbackEnded = true;
-    setTimeout(() => alert("🎉 播放完成！"), 1000);
+
+    setTimeout(() => alert("🎉 播放完成！"), 800);
+
     playBtn.textContent = "▶";
     panel.classList.remove("hidden");
     hasStarted = false;
   }
 }
-
-// ===== 控制面板 =====
-const panel = document.getElementById("controlPanel");
-const openPanelBtn = document.getElementById("openPanelBtn");
-
-openPanelBtn.addEventListener("click", () => {
-  panel.classList.toggle("hidden");
-});
