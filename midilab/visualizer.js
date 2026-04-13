@@ -103,30 +103,35 @@ applyBpmBtn.addEventListener("click", () => {
 
 // ===== 控制 =====
 const playBtn = document.getElementById("playBtn");
+const panel = document.getElementById("controlPanel");
 
 playBtn.addEventListener("click", () => {
   if (!midiData) return;
 
-  // 第一次播放
+  // 👉 第一次播放
   if (!hasStarted) {
     hasStarted = true;
     paused = false;
     playbackTime = 0;
     animationStartTime = performance.now();
     requestAnimationFrame(animate);
+
     playBtn.textContent = "⏸";
+    panel.classList.add("hidden"); // ✅ 这里才会隐藏
     return;
   }
 
-  // 切换暂停/继续
+  // 👉 切换暂停
   paused = !paused;
 
   if (!paused) {
     animationStartTime = performance.now() - playbackTime / tempoFactor * 1000;
     requestAnimationFrame(animate);
     playBtn.textContent = "⏸";
+    panel.classList.add("hidden"); // 播放时隐藏
   } else {
     playBtn.textContent = "▶";
+    panel.classList.remove("hidden"); // 暂停时显示
   }
 });
 
@@ -325,6 +330,8 @@ function animate(timestamp) {
     playbackEnded = true;
     setTimeout(() => alert("🎉 播放完成！"), 1000);
     playBtn.textContent = "▶";
+    panel.classList.remove("hidden");
+    hasStarted = false;
   }
 }
 
