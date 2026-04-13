@@ -102,24 +102,32 @@ applyBpmBtn.addEventListener("click", () => {
 });
 
 // ===== 控制 =====
-startBtn.addEventListener("click", () => {
-  if (!midiData || hasStarted) return;
-  hasStarted = true;
-  paused = false;
-  playbackTime = 0;
-  animationStartTime = performance.now();
-  playbackEnded = false;
-  requestAnimationFrame(animate);
-});
+const playBtn = document.getElementById("playBtn");
 
-pauseBtn.addEventListener("click", () => {
-  if (!hasStarted) return;
+playBtn.addEventListener("click", () => {
+  if (!midiData) return;
+
+  // 第一次播放
+  if (!hasStarted) {
+    hasStarted = true;
+    paused = false;
+    playbackTime = 0;
+    animationStartTime = performance.now();
+    requestAnimationFrame(animate);
+    playBtn.textContent = "⏸";
+    return;
+  }
+
+  // 切换暂停/继续
   paused = !paused;
+
   if (!paused) {
     animationStartTime = performance.now() - playbackTime / tempoFactor * 1000;
     requestAnimationFrame(animate);
+    playBtn.textContent = "⏸";
+  } else {
+    playBtn.textContent = "▶";
   }
-  pauseBtn.textContent = paused ? "继续" : "暂停";
 });
 
 resetBtn.addEventListener("click", () => {
@@ -316,5 +324,14 @@ function animate(timestamp) {
   } else if (!playbackEnded) {
     playbackEnded = true;
     setTimeout(() => alert("🎉 播放完成！"), 1000);
+    playBtn.textContent = "▶";
   }
 }
+
+// ===== 控制面板 =====
+const panel = document.getElementById("controlPanel");
+const openPanelBtn = document.getElementById("openPanelBtn");
+
+openPanelBtn.addEventListener("click", () => {
+  panel.classList.toggle("hidden");
+});
