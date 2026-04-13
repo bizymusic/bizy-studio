@@ -8,6 +8,8 @@ body {
 }
 
 /* ===== MIDI舞台 ===== */
+
+
 #noteContainerWrapper {
   width: 80%;
   height: 80vh;
@@ -30,18 +32,21 @@ body {
 }
 
 /* ===== 音符 ===== */
+
+
 .note {
   position: absolute;
   height: 6px;
-  background: #00e0ff;
+  background: #C1BFBF;
   border-radius: 2px;
   opacity: 0.7;
   transition: 0.1s;
 }
 
 .note.active {
-  opacity: 1;
+  background-color: #000;
 }
+
 
 .note.active.glow {
   box-shadow: 
