@@ -48,3 +48,43 @@ midiCard.addEventListener('click', (e) => {
         }
     });
 });
+
+
+
+
+const nav = document.getElementById("nav");
+const navInner = document.getElementById("navInner");
+
+// ===== 滚动变实色 =====
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) {
+    nav.classList.add("scrolled");
+  } else {
+    nav.classList.remove("scrolled");
+  }
+});
+
+// ===== 磁吸效果（高级感核心）=====
+document.addEventListener("mousemove", (e) => {
+  const rect = navInner.getBoundingClientRect();
+
+  const x = e.clientX - (rect.left + rect.width / 2);
+  const y = e.clientY - (rect.top + rect.height / 2);
+
+  const distance = Math.sqrt(x * x + y * y);
+
+  // 只有靠近才触发
+  if (distance < 200) {
+    navInner.style.transform = `
+      translate(${x * 0.05}px, ${y * 0.05}px)
+      scale(1)
+    `;
+  } else {
+    navInner.style.transform = `translate(0,0) scale(1)`;
+  }
+});
+
+// ===== 鼠标离开恢复 =====
+document.addEventListener("mouseleave", () => {
+  navInner.style.transform = `translate(0,0) scale(1)`;
+});

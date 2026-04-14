@@ -130,6 +130,7 @@ input {
   color: #fff;
   border-radius: 6px;
   padding: 4px 6px;
+  cursor: text;
 }
 
 /* ===== 底部播放器 ===== */
@@ -224,3 +225,5 @@ button:hover {
   color: #ffffff;
   font-weight: 500;
 }
+
+

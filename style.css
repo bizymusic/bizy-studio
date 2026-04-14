@@ -9,15 +9,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: crosshair; /* 更有极客感 */
+    cursor: default; /* 鼠标 */
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--dark);
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-    line-height: 1.2;
+    
+    margin: 0;
+    background: url("./img/bg.png");
+    background-size: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
 }
 
 #canvas-container {
@@ -28,10 +29,11 @@ body {
 }
 
 /* 导航栏：克制而精致 */
-.nav {
+
+.top-nav {
   position: fixed;
   top: 20px;
-  right: 20px;
+  left: 20px;
 
   width: auto;
   max-width: none;
@@ -39,39 +41,87 @@ body {
   z-index: 999;
 }
 
+.nav {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999;
+
+  pointer-events: none; /* 给磁吸用 */
+}
+
+/* ===== 内部卡片 ===== */
 .nav-inner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 24px;
 
-  padding: 10px 18px;
+  padding: 10px 20px;
 
-  background: rgba(20,20,20,0.5);
-  backdrop-filter: blur(20px);
+  background: rgba(20,20,20,0.2);
+  backdrop-filter: blur(10px);
 
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+
+  transition: 
+    background 0.4s,
+    transform 0.4s,
+    backdrop-filter 0.4s;
+
+  pointer-events: auto;
 }
 
+/* ===== 滚动后状态 ===== */
+.nav.scrolled .nav-inner {
+  background: rgba(20,20,20,0.65);
+  backdrop-filter: blur(20px);
+  transform: scale(0.95);
+}
+
+/* ===== logo ===== */
 .logo {
   font-weight: 600;
+  font-size: 14px;
   letter-spacing: 1px;
+  color: #000000;
 }
 
+/* ===== 导航链接 ===== */
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 18px;
 }
 
 .nav-links a {
-  color: #aaa;
+  color: #303030;
   text-decoration: none;
   font-size: 13px;
-  transition: 0.2s;
+  position: relative;
+  transition: 0.3s;
 }
 
+/* hover颜色 */
 .nav-links a:hover {
   color: #fff;
+}
+
+/* ===== 下划线动画 ===== */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  width: 0;
+  height: 1px;
+
+  background: linear-gradient(90deg, #fff, transparent);
+  transition: 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
 }
 
 /* Hero Section */
@@ -141,4 +191,14 @@ body {
 
 @media (max-width: 768px) {
     .work-grid { grid-template-columns: 1fr; }
+}
+
+button,
+a {
+    cursor: pointer;
+}
+
+/* 输入框 */
+input {
+    cursor: text;
 }
